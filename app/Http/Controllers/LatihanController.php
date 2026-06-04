@@ -16,7 +16,7 @@ class LatihanController extends Controller
     public function tambah()
     {
         $jumlahTambah = 0;
-        $title = 'Akbar';
+        $title = 'Penjumlahan';
         return view('tambah', compact('jumlahTambah', 'title'));
     }
 
@@ -24,14 +24,14 @@ class LatihanController extends Controller
     {
         $jumlahKurang = 0;
         $title = 'Pengurangan';
-        return view('kurang', compact('jumlahKurang','title'));
+        return view('kurang', compact('jumlahKurang', 'title'));
     }
 
     public function kali()
     {
         $jumlahKali = 0;
         $title = 'Perkalian';
-        return view('kali', compact('jumlahKali','title'));
+        return view('kali', compact('jumlahKali', 'title'));
     }
 
     public function bagi()
@@ -51,7 +51,7 @@ class LatihanController extends Controller
         // return $jumlah;
     }
 
-     public function actionKurang(Request $request)
+    public function actionKurang(Request $request)
     {
         $angka1 = $request->angka_1;
         $angka2 = $request->input('angka_2');
@@ -80,5 +80,4 @@ class LatihanController extends Controller
         return view('bagi', compact('jumlahBagi'));
         // return $jumlah;
     }
-
 }

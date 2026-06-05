@@ -19,6 +19,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <div id="app">
         @include('layouts.inc.sidebar')
 
@@ -30,11 +31,11 @@
             </header>
 
             <div class="page-heading">
-                <h3>@yield('tittle')</h3>
+                {{--  <h3>@yield('tittle')</h3>  --}}
             </div>
             <div class="page-content">
                 <div class="row">
-                    <div class="col-12 col-lg-9">
+                    <div class="col-12 col-lg-12">
                         @yield('content')
                     </div>
                 </div>
@@ -314,15 +315,16 @@
                     </div>
                 </div>
             </footer>
-        </>
-    </div>
-    <script src="{{ asset('template/dist/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ asset('template/dist/assets/js/bootstrap.bundle.min.js') }}"></script>
+            </>
+        </div>
+        <script src="{{ asset('template/dist/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+        <script src="{{ asset('template/dist/assets/js/bootstrap.bundle.min.js') }}"></script>
 
-    <script src="{{ asset('template/dist/assets/vendors/apexcharts/apexcharts.js') }}"></script>
-    <script src="{{ asset('template/dist/assets/js/pages/dashboard.js') }}"></script>
+        <script src="{{ asset('template/dist/assets/vendors/apexcharts/apexcharts.js') }}"></script>
+        <script src="{{ asset('template/dist/assets/js/pages/dashboard.js') }}"></script>
 
-    <script src="{{ asset('template/dist/assets/js/main.js') }}"></script>
+        <script src="{{ asset('template/dist/assets/js/main.js') }}"></script>
+        @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
 </body>
 
 </html>

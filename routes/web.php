@@ -36,6 +36,8 @@ Route::middleware(['auth', 'nochace'])->group(function () {
     Route::get('dashboard', function () {
         return view('dashboard.index');
     });
+    //user include put, get, delete, post
+    Route::resource('user',\App\Http\Controllers\UserController::class);
 });
 
 

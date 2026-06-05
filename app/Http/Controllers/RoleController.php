@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Role;
 use RealRashid\SweetAlert\Facades\Alert;
 
 
-class UserController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::orderBy('id', 'desc')->get();
+        $roles = Role::orderBy('id', 'desc')->get();
         // $users = User::latest()->get();
         // $users = User::orderByde
-        $text = "Are you sure you want to delete?";
-        $title = "User Management";
-        confirmDelete("Delete User", $text);
-        return view('user.index', compact('users', 'title'));
+        // $text = "Are you sure you want to delete?";
+        $title = "Role Management";
+        // confirmDelete("Delete User", $text);
+        return view('role.index', compact('roles', 'title'));
     }
 
     /**
@@ -28,8 +28,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $title = "Create New User";
-        return view('user.create', compact('title'));
+        $title = "Create New Role";
+        return view('role.create', compact('title'));
     }
 
     /**
@@ -39,12 +39,12 @@ class UserController extends Controller
     {
         $validate = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,',
-            'password' => 'required|min:6'
+            'is_active' => 'required'
         ]);
-        User::create($request->all());
-        Alert::success('Success!!', 'User Was Created');
-        return redirect()->to('user');
+
+        Role::create($request->all());
+        Alert::success('Success!!', 'Role Was Created');
+        return redirect()->to('role');
     }
 
     /**
@@ -60,10 +60,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Edit User";
-        $edit = User::find($id); //blank
+        $title = "Edit Role";
+        $edit = Role::find($id); //blank
         // $edit = User::findOrFail($id); show 404
-        return view('user.edit', compact('title', 'edit'));
+        return view('role.edit', compact('title', 'edit'));
     }
 
     /**
@@ -74,14 +74,11 @@ class UserController extends Controller
 
         $data = [
             'name' => $request->name,
-            'email' => $request->email,
+            'is_active' => $request->is_active,
         ];
-        // If user don't enter the password
-        if (filled($request->password)) {
-            $data['password'] = $request->password;
-        }
-        User::find($id)->update($data);
-        return redirect()->to('user');
+        
+        Role::find($id)->update($data);
+        return redirect()->to('role');
     }
 
     /**
@@ -89,7 +86,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        User::find($id)->delete();
-        return redirect()->to('user');
+        Role::find($id)->delete();
+        return redirect()->to('role');
     }
 }

@@ -38,6 +38,7 @@ Route::middleware(['auth', 'nochace'])->group(function () {
     });
     //user include put, get, delete, post
     Route::resource('user',\App\Http\Controllers\UserController::class);
+    Route::resource('role',\App\Http\Controllers\RoleController::class);
 });
 
 

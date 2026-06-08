@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use RealRashid\SweetAlert\Facades\Alert;
 
-
 class RoleController extends Controller
 {
     /**
@@ -76,7 +75,7 @@ class RoleController extends Controller
             'name' => $request->name,
             'is_active' => $request->is_active,
         ];
-        
+
         Role::find($id)->update($data);
         return redirect()->to('role');
     }

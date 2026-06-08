@@ -37,8 +37,9 @@ Route::middleware(['auth', 'nochace'])->group(function () {
         return view('dashboard.index');
     });
     //user include put, get, delete, post
-    Route::resource('user',\App\Http\Controllers\UserController::class);
-    Route::resource('role',\App\Http\Controllers\RoleController::class);
+    Route::resource('user', \App\Http\Controllers\UserController::class);
+    Route::resource('role', \App\Http\Controllers\RoleController::class);
+    Route::resource('locker', \App\Http\Controllers\LockerController::class);
 });
 
 

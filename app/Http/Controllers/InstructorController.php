@@ -3,27 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Student;
+use App\Models\Instructor;
 use App\Models\Major;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
 
-class StudentController extends Controller
+class InstructorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $students = Student::with('major', 'user')->orderByDesc('id')->get();
-        // dd($students);
+        $instructors = Instructor::with('major')->orderByDesc('id')->get();
+        // dd($instructors);
         // $users = User::latest()->get();
         // $users = User::orderByde
         $text = "Are you sure you want to delete?";
-        $title = "Student Management";
+        $title = "Instructor Management";
         confirmDelete("Delete User", $text);
-        return view('student.index', compact('students', 'title'));
+        return view('instructor.index', compact('instructors', 'title'));
     }
 
     /**
@@ -31,9 +31,9 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $title = "Create New Student";
+        $title = "Create New Instructor";
         $majors = Major::get();
-        return view('student.create', compact('title', 'majors'));
+        return view('instructor.create', compact('title', 'majors'));
     }
 
     /**
@@ -64,15 +64,15 @@ class StudentController extends Controller
                 'email' => $request->email,
                 'password' => $request->password
             ]);
-            Student::create([
+            Instructor::create([
                 'name' => $request->name,
                 'user_id' => $user->id,
                 'major_id' => $request->major_id,
                 'phone' => $request->phone
             ]);
             DB::commit();
-            Alert::success('Success!!', 'Student Was Created');
-            return redirect()->to('student');
+            Alert::success('Success!!', 'Instructor Was Created');
+            return redirect()->to('instructor');
         } catch (\Throwable $th) {
             DB::rollBack();
             // return $th->getMessage();
@@ -94,27 +94,25 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        $title = "Edit Student";
-        $edit = Student::with('user')->find($id);
+        $title = "Edit Instructor";
+        $edit = Instructor::with('user')->find($id);
         $majors = Major::get();  //blank
         // $edit = User::findOrFail($id); show 404
-        return view('student.edit', compact('title', 'edit', 'majors'));
+        return view('instructor.edit', compact('title', 'edit', 'majors'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Instructor $instructor)
     {
-
         DB::beginTransaction();
-
         try {
             $dataUser = [
                 'name' => $request->name,
                 'email' => $request->email
             ];
-            $user = $student->user;
+            $user = $instructor->user;
             if ($request->filled('password')) {
                 $dataUser['password'] = $request->password;
             }
@@ -126,10 +124,10 @@ class StudentController extends Controller
                 'name' => $request->name,
                 'phone' => $request->phone,
             ];
-            $student->update($data);
+            $instructor->update($data);
             DB::commit();
-            Alert::success('Success!!', 'Update Student Success');
-            return redirect()->to('student');
+            Alert::success('Success!!', 'Update Instructor Success');
+            return redirect()->to('instructor');
         } catch (\Throwable $th) {
             DB::rollBack();
             // return $th->getMessage();
@@ -141,12 +139,13 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
+    public function destroy(Instructor $instructor)
     {
+
         try {
-            $student->user()->delete();
-            Alert::success('Success!!', 'Delete Student Success');
-            return redirect()->to('student');
+            $instructor->user()->delete();
+            Alert::success('Success!!', 'Delete Instructor Success');
+            return redirect()->to('instructor');
         } catch (\Throwable $th) {
             DB::rollBack();
             // return $th->getMessage();

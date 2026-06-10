@@ -44,7 +44,7 @@ class KeyController extends Controller
 
         Key::create($request->all());
         Alert::success('Success!!', 'Key Was Created');
-        return redirect()->to('role');
+        return redirect()->to('key');
     }
 
     /**
@@ -71,7 +71,7 @@ class KeyController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       $data = [
+        $data = [
             'name' => $request->name,
             'is_active' => $request->is_active,
         ];

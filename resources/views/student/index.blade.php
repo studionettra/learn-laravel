@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('tittle', 'Key Management')
+@section('tittle', 'Student Management')
 @section('content')
     <div class="card">
         <div class="card-header">
@@ -8,37 +8,35 @@
             </h3>
             <div class="card-body">
                 <div class="mb-3" align="right">
-                    <a href="{{ route('key.create') }}" class="btn btn-primary">Create New Key</a>
+                    <a href="{{ route('student.create') }}" class="btn btn-primary">Create New Student</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Major</th>
                             <th>Name</th>
-                            {{--      --}}
+                            <th>E-Mail</th>
+                            <th>Phone</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($keys as $index => $key)
+                        @foreach ($students as $index => $student)
                             <tr>
                                 <td>{{ $index += 1 }}</td>
-                                <td> {{ $key->name ?? '' }}</td>
-                                {{--  <td>{{ $key->email }}</td>  --}}
+                                <td> {{ $student->major->name ?? '' }}</td>
+                                <td> {{ $student->name ?? '' }}</td>
+                                <td> {{ $student->user->email ?? '' }}</td>
+                                <td> {{ $student->phone ?? '' }}</td>
                                 <td>
-                                    <a href="{{ route('key.edit', $key->id) }}" class="btn btn-success icon">
+                                    <a href="{{ route('student.edit', $student->id) }}" class="btn btn-success icon">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('key.destroy', $key->id) }}" method="POST" class="d-inline"
-                                        data-confirm-delete="true">
-                                        @csrf
-                                        @method('DELETE')
 
-                                        <button class="btn btn-danger">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
+                                    <a href="{{ route('student.destroy', $student->id) }}" class="btn btn-danger"
+                                        data-confirm-delete="true">Delete</a>
 
-                                    </form>
                                 </td>
                             </tr>
                         @endforeach

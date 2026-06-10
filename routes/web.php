@@ -48,6 +48,7 @@ Route::middleware(['auth', 'nochace'])->group(function () {
     Route::resource('major', \App\Http\Controllers\MajorController::class);
     Route::resource('key', \App\Http\Controllers\KeyController::class);
     Route::resource('student', \App\Http\Controllers\StudentController::class);
+    Route::resource('instructor', \App\Http\Controllers\InstructorController::class);
 });
 
 

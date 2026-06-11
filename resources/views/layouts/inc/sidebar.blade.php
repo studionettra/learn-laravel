@@ -15,7 +15,50 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
 
-                <li class="sidebar-item active ">
+                {{-- LOOPING MENU UTAMA --}}
+                @if (isset($sidebarMenus))
+                    @foreach ($sidebarMenus as $menu)
+                        @php
+                            // Cek apakah menu ini memiliki sub-menu
+                            $hasSub = $menu->children->count() > 0;
+
+                            // Cek aktifasi class untuk menu yang memiliki sub-menu
+                            $subActive = false;
+                            if ($hasSub) {
+                                foreach ($menu->children as $child) {
+                                    if (request()->is(trim($child->url, '/') . '*')) {
+                                        $subActive = true;
+                                    }
+                                }
+                            }
+
+                            // Penentuan class active
+                            $isActive = request()->is(trim($menu->url, '/') . '*') || $subActive;
+                        @endphp
+
+                        <li class="sidebar-item {{ $hasSub ? 'has-sub' : '' }} {{ $isActive ? 'active' : '' }}">
+                            <a href="{{ $hasSub ? '#' : url($menu->url) }}" class='sidebar-link'>
+                                <i class="{{ $menu->icon ?? 'bi bi-grid-fill' }}"></i>
+                                <span>{{ $menu->name }}</span>
+                            </a>
+
+                            {{-- JIKA MEMILIKI SUB-MENU (CHILDREN) --}}
+                            @if ($hasSub)
+                                <ul class="submenu {{ $subActive ? 'active' : '' }}">
+                                    @foreach ($menu->children as $child)
+                                        <li
+                                            class="submenu-item {{ request()->is(trim($child->url, '/') . '*') ? 'active' : '' }}">
+                                            <a href="{{ url($child->url) }}">{{ $child->name }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </li>
+                    @endforeach
+                @endif
+
+                <li class="sidebar-title">Action</li>
+                {{-- <li class="sidebar-item active ">
                     <a href="index.html" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
@@ -24,15 +67,75 @@
 
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-collection-fill"></i>
-                        <span>Master Data</span>
+                        <i class="bi bi-stack"></i>
+                        <span>Components</span>
                     </a>
                     <ul class="submenu ">
                         <li class="submenu-item ">
-                            <a href="{{ route('key.index') }}">Key</a>
+                            <a href="component-alert.html">Alert</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="{{ route('major.index') }}">Major Management</a>
+                            <a href="component-badge.html">Badge</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-breadcrumb.html">Breadcrumb</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-button.html">Button</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-card.html">Card</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-carousel.html">Carousel</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-dropdown.html">Dropdown</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-list-group.html">List Group</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-modal.html">Modal</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-navs.html">Navs</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-pagination.html">Pagination</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-progress.html">Progress</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-spinner.html">Spinner</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="component-tooltip.html">Tooltip</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-collection-fill"></i>
+                        <span>Extra Components</span>
+                    </a>
+                    <ul class="submenu ">
+                        <li class="submenu-item ">
+                            <a href="extra-component-avatar.html">Avatar</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="extra-component-sweetalert.html">Sweet Alert</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="extra-component-toastify.html">Toastify</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="extra-component-rating.html">Rating</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="extra-component-divider.html">Divider</a>
                         </li>
                     </ul>
                 </li>
@@ -55,29 +158,59 @@
                         <li class="submenu-item ">
                             <a href="{{ route('role.create') }}">Create Role</a>
                         </li>
+                        <li class="submenu-item ">
+                            <a href="{{ route('menu.index') }}">Menu</a>
+                        </li>
                     </ul>
                 </li>
+                <li class="sidebar-item">
+                    <a href="{{ route('locker.index') }}" class='sidebar-link'>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Locker Management</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{{ route('member.index') }}" class='sidebar-link'>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Member Management</span>
+                    </a>
+                </li>
 
-                {{--  <li class="sidebar-title">Forms &amp; Tables</li>  --}}
+                <li class="sidebar-title">Forms &amp; Tables</li>
 
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-hexagon-fill"></i>
-                        <span>Student Management</span>
+                        <span>Form Elements</span>
                     </a>
                     <ul class="submenu ">
                         <li class="submenu-item ">
-                            <a href="{{ route('student.index') }}">Student</a>
+                            <a href="form-element-input.html">Input</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="form-element-input-group.html">Input Group</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="form-element-select.html">Select</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="form-element-radio.html">Radio</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="form-element-checkbox.html">Checkbox</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="form-element-textarea.html">Textarea</a>
+                        </li>
                     </ul>
                 </li>
+
                 <li class="sidebar-item  ">
-                    <a href="{{ route('instructor.index') }}" class='sidebar-link'>
+                    <a href="form-layout.html" class='sidebar-link'>
                         <i class="bi bi-file-earmark-medical-fill"></i>
-                        <span>Instructor</span>
+                        <span>Form Layout</span>
                     </a>
                 </li>
-
-                {{--
 
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
@@ -276,16 +409,14 @@
                         <i class="bi bi-cash"></i>
                         <span>Donate</span>
                     </a>
-                </li>  --}}
-
+                </li> --}}
                 <li class="sidebar-item">
-                    <form action="{{ route('action-logout') }}" method="POST">
+                    <form action="{{ route('action-logout') }}" method="POST"
+                        onclick="return confirm('Yakin untuk logout?')">
                         @csrf
-                        <button type="submit" class="btn btn-danger">Log Out
-                        </button>
+                        <button type="submit" class="btn btn-danger">Log-out</button>
                     </form>
                 </li>
-
 
             </ul>
         </div>

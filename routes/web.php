@@ -49,6 +49,7 @@ Route::middleware(['auth', 'nochace'])->group(function () {
     Route::resource('key', \App\Http\Controllers\KeyController::class);
     Route::resource('student', \App\Http\Controllers\StudentController::class);
     Route::resource('instructor', \App\Http\Controllers\InstructorController::class);
+    Route::resource('menu', \App\Http\Controllers\MenuController::class);
 });
 
 

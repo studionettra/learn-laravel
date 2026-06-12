@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('tittle', 'User Management')
+@section('title', 'User Management')
 @section('content')
     <div class="card">
         <div class="card-header">
@@ -16,6 +16,7 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -26,19 +27,28 @@
                                 <td> {{ $user->name ?? '' }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
+                                    @foreach ($user->roles as $role)
+                                        <span class="badge bg-primary">{{ $role->name ?? '-' }}</span>
+                                    @endforeach
+                                </td>
+                                <td>
                                     <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success icon">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="d-inline"
+                                    <a href="{{ route('user.destroy', $user->id) }}" class="btn btn-danger"
+                                        data-confirm-delete="true">Delete</a>
+
+                                    {{--  <form action="{{ route('user.destroy', $user->id) }}" method="POST" class="d-inline"
                                         data-confirm-delete="true">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button class="btn btn-danger">
+                                        <button class="btn btn-danger btn-delete">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
 
-                                    </form>
+                                    </form>  --}}
+
                                 </td>
                             </tr>
                         @endforeach
@@ -47,4 +57,30 @@
             </div>
         </div>
     </div>
+    {{--  <script>
+        document.addEventListener('click', function(e) {
+
+            const button = e.target.closest('.btn-delete');
+
+            if (button) {
+                e.preventDefault();
+                const form = button.closest('.form-delete');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data user yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+    </script>  --}}
 @endsection

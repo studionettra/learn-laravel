@@ -21,7 +21,8 @@
                         <select name="parent_id" class="form-select" aria-label="Default select example">
                             <option value="">Select One</option>
                             @foreach ($parents as $parent)
-                                <option value="{{ $parent->id }}">{{ $parent->id == $menu->parent_id ? 'selected' : '' }}
+                                <option value="{{ $parent->id }}" {{ $parent->id == $menu->parent_id ? 'selected' : '' }}>
+                                    {{ $parent->name }}
                                 </option>
                             @endforeach
                         </select>

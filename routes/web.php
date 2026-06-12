@@ -50,6 +50,7 @@ Route::middleware(['auth', 'nochace'])->group(function () {
     Route::resource('student', \App\Http\Controllers\StudentController::class);
     Route::resource('instructor', \App\Http\Controllers\InstructorController::class);
     Route::resource('menu', \App\Http\Controllers\MenuController::class);
+    Route::resource('user-role', \App\Http\Controllers\UserRoleController::class);
 });
 
 

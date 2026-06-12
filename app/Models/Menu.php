@@ -31,6 +31,7 @@ class Menu extends Model
 
     public function children(): HasMany
     {
-        return $this->hasManny(Menu::class, 'parent_id')->orderBy('sort_oder', 'asc');
+        return $this->hasMany(Menu::class, 'parent_id')
+            ->orderBy('sort_order', 'asc');
     }
 }

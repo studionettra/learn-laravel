@@ -24,6 +24,32 @@
                     <input type="radio" name="is_active" value="0" {{ $edit->is_active == 0 ? 'checked' : '' }}> In
                     Active
                 </div>
+
+                <div class="row">
+                    @foreach ($parents as $parent)
+                        <div class="col-md-6 mb-3">
+                            <div class="border rounded p-3 h-100">
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" class="form-check-input" name="menu_ids[]"
+                                        value="{{ $parent->id }}">
+                                    <label class="form-check-label fw-bold">
+                                        {{ $parent->name }}
+                                    </label>
+                                </div>
+
+                                @foreach ($parent->children as $child)
+                                    <div class="form-check ms-3">
+                                        <input type="checkbox" name="menu_ids[]" value="{{ $child->id }}"
+                                            class="form-check-input">
+                                        <label class="form-check-label">
+                                            {{ $child->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
                 <button class="btn btn-primary" type="submit">Save</button>
                 <a href="{{ url()->previous() }}" class="text-secondary">Back</a>
             </form>

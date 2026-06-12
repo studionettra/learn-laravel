@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Key Management')
+@section('title', 'User Role Management')
 @section('content')
     <div class="card">
         <div class="card-header">
@@ -8,28 +8,28 @@
             </h3>
             <div class="card-body">
                 <div class="mb-3" align="right">
-                    <a href="{{ route('key.create') }}" class="btn btn-primary">Create New Key</a>
+                    <a href="{{ route('user-role.create') }}" class="btn btn-primary">Create New User Role</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Name</th>
-                            {{--      --}}
+                            <th>User Name</th>
+                            <th>Role Name</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($keys as $index => $key)
+                        @foreach ($userRoles as $index => $userRole)
                             <tr>
                                 <td>{{ $index += 1 }}</td>
-                                <td> {{ $key->name ?? '' }}</td>
-                                {{--  <td>{{ $key->email }}</td>  --}}
+                                <td> {{ $userRole->user->name ?? '' }}</td>
+                                <td> {{ $userRole->role->name ?? '' }}</td>
                                 <td>
-                                    <a href="{{ route('key.edit', $key->id) }}" class="btn btn-success icon">
+                                    <a href="{{ route('user-role.edit', $userRole->id) }}" class="btn btn-success icon">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('key.destroy', $key->id) }}" method="POST" class="d-inline"
+                                    <form action="{{ route('user-role.destroy', $userRole->id) }}" method="POST" class="d-inline"
                                         data-confirm-delete="true">
                                         @csrf
                                         @method('DELETE')

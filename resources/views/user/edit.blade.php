@@ -11,6 +11,16 @@
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
+                    <label for="">Role *</label>
+                    <select name="role_ids[]" id="" class="form-control" required multiple>
+                        <option value="">Select One</option>
+                        @foreach ($roles as $role)
+                            <option @selected(in_array($role->id, $edit->roles->pluck('id')->all())) value="{{ $role->id }}">{{ $role->name }}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-secondary">)*can choose more than one role</small>
+                </div>
+                <div class="mb-3">
                     <label for="">Name *</label>
                     <input type="text" class="form-control" placeholder="Enter your name" name="name" required
                         value="{{ $edit->name }}">

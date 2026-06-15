@@ -10,6 +10,10 @@
             <form action="{{ route('user.store') }}" method="POST">
                 @csrf
                 <div class="mb-3">
+                    <label for="">Code *</label>
+                    <input type="text" class="form-control" value="{{ $userCode }}" name="code" readonly>
+                </div>
+                <div class="mb-3">
                     <label for="">Role *</label>
                     <select name="role_ids[]" id="" class="form-control" required multiple>
                         <option value="">Select One</option>

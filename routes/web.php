@@ -1,34 +1,7 @@
 <?php
 
-use App\Http\Controllers\LatihanController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
-
-
-
-
-
-
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Route::get('latihan', [LatihanController::class, 'index']);
-Route::get('tambah', [LatihanController::class, 'tambah'])->name('tambah');
-Route::get('kurang', [LatihanController::class, 'kurang'])->name('kurang');
-Route::get('kali', [LatihanController::class, 'kali'])->name('kali');
-Route::get('bagi', [LatihanController::class, 'bagi'])->name('bagi');
-
-Route::post('action-tambah', [LatihanController::class, 'actionTambah'])->name('action-tambah');
-Route::post('action-kurang', [LatihanController::class, 'actionKurang'])->name('action-kurang');
-Route::post('action-kali', [LatihanController::class, 'actionKali'])->name('action-kali');
-Route::post('action-bagi', [LatihanController::class, 'actionBagi'])->name('action-bagi');
-
-//Profiles
-Route::get('profile', [ProfileController::class, 'index']);
 
 //Login
 Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -38,21 +11,29 @@ Route::post('action-login', [LoginController::class, 'actionLogin'])->name('acti
 Route::post('action-out', [LoginController::class, 'actionLogout'])->name('action-logout');
 
 Route::middleware(['auth', 'nochace'])->group(function () {
+    // Semua yang login bisa akses dashboard
     Route::get('dashboard', function () {
         return view('dashboard.index');
     });
-    //user include put, get, delete, post
-    Route::resource('user', \App\Http\Controllers\UserController::class);
-    Route::resource('role', \App\Http\Controllers\RoleController::class);
-    Route::resource('locker', \App\Http\Controllers\LockerController::class);
-    Route::resource('major', \App\Http\Controllers\MajorController::class);
-    Route::resource('key', \App\Http\Controllers\KeyController::class);
-    Route::resource('student', \App\Http\Controllers\StudentController::class);
-    Route::resource('instructor', \App\Http\Controllers\InstructorController::class);
-    Route::resource('menu', \App\Http\Controllers\MenuController::class);
-    Route::resource('user-role', \App\Http\Controllers\UserRoleController::class);
+    
+    // Group Administrator & Pimpinan
+    Route::middleware(['checklevel:Administrator,Pimpinan'])->group(function () {
+        Route::get('report', [\App\Http\Controllers\ReportController::class, 'index'])->name('report.index');
+        Route::get('report/print', [\App\Http\Controllers\ReportController::class, 'print'])->name('report.print');
+    });
+
+    // Group Administrator saja
+    Route::middleware(['checklevel:Administrator'])->group(function () {
+        Route::resource('user', \App\Http\Controllers\UserController::class);
+        Route::resource('level', \App\Http\Controllers\LevelController::class);
+    });
+
+    // Group Administrator & Operator
+    Route::middleware(['checklevel:Administrator,Operator'])->group(function () {
+        Route::get('transaction/{id}/print', [\App\Http\Controllers\TransOrderController::class, 'print'])->name('transaction.print');
+        Route::resource('customer', \App\Http\Controllers\CustomerController::class);
+        Route::resource('service', \App\Http\Controllers\TypeOfServiceController::class);
+        Route::resource('transaction', \App\Http\Controllers\TransOrderController::class);
+        Route::resource('pickup', \App\Http\Controllers\TransLaundryPickupController::class);
+    });
 });
-
-
-
-// Router::get('latihan', [App\Http\Controllers\LatihanController::class, 'index']);

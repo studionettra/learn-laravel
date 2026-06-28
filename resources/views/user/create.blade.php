@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('tittle', 'Crate New User')
+@section('title', 'Create New User')
 
 @section('content')
     <div class="card">
@@ -14,14 +14,13 @@
                     <input type="text" class="form-control" value="{{ $userCode }}" name="code" readonly>
                 </div>
                 <div class="mb-3">
-                    <label for="">Role *</label>
-                    <select name="role_ids[]" id="" class="form-control" required multiple>
+                    <label for="">Level *</label>
+                    <select name="id_level" id="" class="form-control" required>
                         <option value="">Select One</option>
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->id }}">{{ $role->name }}</option>
+                        @foreach ($levels as $level)
+                            <option value="{{ $level->id }}">{{ $level->level_name }}</option>
                         @endforeach
                     </select>
-                    <small class="text-secondary">)*can choose more than one role</small>
                 </div>
                 <div class="mb-3">
                     <label for="">Name *</label>

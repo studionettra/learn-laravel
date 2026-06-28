@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('tittle', 'Crate New User')
+@section('title', 'Edit User')
 
 @section('content')
     <div class="card">
@@ -11,14 +11,13 @@
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
-                    <label for="">Role *</label>
-                    <select name="role_ids[]" id="" class="form-control" required multiple>
+                    <label for="">Level *</label>
+                    <select name="id_level" id="" class="form-control" required>
                         <option value="">Select One</option>
-                        @foreach ($roles as $role)
-                            <option @selected(in_array($role->id, $edit->roles->pluck('id')->all())) value="{{ $role->id }}">{{ $role->name }}</option>
+                        @foreach ($levels as $level)
+                            <option @selected($level->id == $edit->id_level) value="{{ $level->id }}">{{ $level->level_name }}</option>
                         @endforeach
                     </select>
-                    <small class="text-secondary">)*can choose more than one role</small>
                 </div>
                 <div class="mb-3">
                     <label for="">Name *</label>

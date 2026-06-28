@@ -16,7 +16,7 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Level</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -27,7 +27,9 @@
                                 <td> {{ $user->name ?? '' }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
-                                    <span class="badge bg-primary">{{ $user->level->level_name ?? '-' }}</span>
+                                    @foreach ($user->roles as $role)
+                                        <span class="badge bg-primary">{{ $role->name ?? '-' }}</span>
+                                    @endforeach
                                 </td>
                                 <td>
                                     <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success icon">

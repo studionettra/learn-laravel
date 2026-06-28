@@ -19,18 +19,25 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $table = 'user';
-
     protected $fillable = [
-        'id_level',
         'name',
         'email',
         'password'
     ];
 
-    public function level()
+    public function profiles()
     {
-        return $this->belongsTo(Level::class, 'id_level')->withTrashed();
+        return $this->hasOne(Profile::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles');
     }
 
 

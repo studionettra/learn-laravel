@@ -15,74 +15,48 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
 
-                @php
-                    // Ambil nama level user yang sedang login
-                    $levelName = Auth::user()->level->level_name ?? '';
-                @endphp
-
                 <li class="sidebar-item active ">
-                    <a href="{{ url('dashboard') }}" class='sidebar-link'>
+                    <a href="index.html" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
 
-                <!-- Penjelasan: Menu Master Data untuk Administrator dan Operator -->
-                @if(in_array($levelName, ['Administrator', 'Operator']))
                 <li class="sidebar-item  has-sub">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-collection-fill"></i>
                         <span>Master Data</span>
                     </a>
                     <ul class="submenu ">
-                        <!-- Penjelasan: Level dan User khusus Administrator -->
-                        @if($levelName === 'Administrator')
                         <li class="submenu-item ">
-                            <a href="{{ route('level.index') }}">Level</a>
+                            <a href="{{ route('role.index') }}">Role</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="{{ route('menu.index') }}">Menu</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="{{ route('key.index') }}">Key</a>
                         </li>
                         <li class="submenu-item ">
                             <a href="{{ route('user.index') }}">User</a>
                         </li>
-                        @endif
-
-                        <!-- Customer dan Service Type boleh untuk Administrator dan Operator -->
                         <li class="submenu-item ">
-                            <a href="{{ route('customer.index') }}">Customer</a>
+                            <a href="{{ route('major.index') }}">Major</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="{{ route('service.index') }}">Service Type</a>
-                        </li>
-                    </ul>
-                </li>
-                @endif
-
-                <!-- Penjelasan: Menu Transaksi untuk Administrator dan Operator -->
-                @if(in_array($levelName, ['Administrator', 'Operator']))
-                <li class="sidebar-item  has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-basket-fill"></i>
-                        <span>Transaction</span>
-                    </a>
-                    <ul class="submenu ">
-                        <li class="submenu-item ">
-                            <a href="{{ route('transaction.index') }}">Laundry Order</a>
+                            <a href="{{ route('instructor.index') }}">Instructor</a>
                         </li>
                         <li class="submenu-item ">
-                            <a href="{{ route('pickup.index') }}">Laundry Pickup</a>
+                            <a href="{{ route('student.index') }}">Student</a>
                         </li>
                     </ul>
                 </li>
-                @endif
-
-                <!-- Penjelasan: Menu Laporan untuk Administrator dan Pimpinan -->
-                @if(in_array($levelName, ['Administrator', 'Pimpinan']))
                 <li class="sidebar-item">
-                    <a href="{{ route('report.index') }}" class='sidebar-link'>
-                        <i class="bi bi-file-earmark-bar-graph-fill"></i>
-                        <span>Report</span>
+                    <a href="{{ route('locker.index') }}" class='sidebar-link'>
+                        <i class="bi bi-door-open-fill"></i>
+                        <span>Locker Management</span>
                     </a>
                 </li>
-                @endif
                 <li class="sidebar-item">
                     <form action="{{ route('action-logout') }}" method="POST">
                         @csrf

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Level;
+use App\Models\Role;
 use App\Models\User;
 // use App\Models\UserRole;
 use Illuminate\Http\Request;
@@ -38,9 +38,9 @@ class UserController extends Controller
         // $number = $lastUser ? substr($lastUser->code, 3) + 1 : 1;
 
         // $id = $lastUser ? $lastUser : 1;
-        $userCode = "BOOK" . str_pad($lastUser ? $lastUser->id + 1 : 1, 5, "0", STR_PAD_LEFT);
-        $levels = Level::get();
-        return view('user.create', compact('title', 'levels', 'userCode'));
+        $userCode = "BOOK" . str_pad($lastUser->id + 1, 5, "0", STR_PAD_LEFT);
+        $roles = Role::get();
+        return view('user.create', compact('title', 'roles', 'userCode'));
     }
 
     /**
@@ -49,9 +49,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'id_level' => 'required|exists:level,id',
             'name' => 'required',
-            'email' => 'required|email|unique:user,email',
+            'email' => 'required|email|unique:users,email,',
             'password' => 'required|min:6'
         ]);
         DB::beginTransaction();
@@ -60,8 +59,9 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $request->password,
-                'id_level' => $request->id_level,
             ]);
+
+            $user->roles()->sync($request->role_ids);
 
             DB::commit();
             Alert::success('Success!!', 'User Role Was Created');
@@ -89,8 +89,9 @@ class UserController extends Controller
     {
         $title = "Edit User";
         $edit = User::find($id); //blank
-        $levels = Level::get();
-        return view('user.edit', compact('title', 'edit', 'levels'));
+        $roles = Role::get();
+        // $edit = User::findOrFail($id); show 404
+        return view('user.edit', compact('title', 'edit', 'roles'));
     }
 
     /**
@@ -98,12 +99,6 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $validate = $request->validate([
-            'id_level' => 'sometimes|required|exists:level,id',
-            'name' => 'required',
-            'email' => 'required|email|unique:user,email,' . $id,
-            'password' => 'nullable|min:6'
-        ]);
 
         DB::beginTransaction();
         try {
@@ -116,10 +111,8 @@ class UserController extends Controller
                 $data['password'] = $request->password;
             }
             $user = User::find($id);
-            if ($request->has('id_level')) {
-                $data['id_level'] = $request->id_level;
-            }
             $user->update($data);
+            $user->roles()->sync($request->role_ids);
             DB::commit();
             Alert::success('Success', 'Data Has Been Update');
             return redirect()->to('user');
